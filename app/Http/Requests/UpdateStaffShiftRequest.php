@@ -15,6 +15,7 @@ class UpdateStaffShiftRequest extends FormRequest
     {
         return [
             'user_id'    => 'sometimes|string',
+            'name'       => 'sometimes|string|max:255',
             'shift_date' => 'sometimes|date',
             'start_time' => 'sometimes',
             'end_time'   => 'sometimes|after:start_time',

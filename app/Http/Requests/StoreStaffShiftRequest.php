@@ -16,6 +16,8 @@ class StoreStaffShiftRequest extends FormRequest
         return [
             'user_id' => 'required|string',
 
+            'name' => 'required|string|max:255',
+            
             'shift_date' => 'required|date',
 
             'start_time' => 'required',

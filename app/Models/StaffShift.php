@@ -10,6 +10,7 @@ class StaffShift extends Model
     protected $connection = 'mongodb';
     protected $fillable = [
         'user_id',
+        'name',
         'shift_date',
         'start_time',
         'end_time',
