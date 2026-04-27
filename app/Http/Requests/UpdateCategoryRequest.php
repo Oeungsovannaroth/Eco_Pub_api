@@ -16,7 +16,7 @@ class UpdateCategoryRequest extends FormRequest
         return [
             'name' => ['sometimes', 'required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'type' => ['sometimes', 'required', 'in:food,drink,alcohol,snack'],
+            'type' => ['sometimes', 'required', 'in:cocktail,wine,alcoholic,signature_drink,food,non-alcoholic,other'],
             'status' => ['sometimes', 'required', 'in:active,inactive'],
         ];
     }

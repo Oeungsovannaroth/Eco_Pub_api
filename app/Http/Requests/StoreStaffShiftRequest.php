@@ -14,10 +14,10 @@ class StoreStaffShiftRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|string',
+            // 'user_id' => 'required|string',
 
             'name' => 'required|string|max:255',
-            
+
             'shift_date' => 'required|date',
 
             'start_time' => 'required',
