@@ -69,7 +69,9 @@ Route::middleware('auth:sanctum')->group(function () {
         'events'       => EventController::class,
         'orders'       => OrderController::class,
         'payments'     => PaymentController::class,
-        'reviews'      => ReviewController::class, // 
+        'reviews'      => ReviewController::class,
+
+
     ], ['only' => ['index', 'show']]);
 
     // ================= CUSTOMER ACTION =================
@@ -88,6 +90,7 @@ Route::middleware('auth:sanctum')->group(function () {
             'events'       => EventController::class,
             'orders'       => OrderController::class,
             'payments'     => PaymentController::class,
+
         ], ['except' => ['index', 'show']]);
 
         // reviews (update & delete only)
@@ -99,5 +102,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // extra actions
         Route::patch('/orders/{id}/status', [OrderController::class, 'updateStatus']);
+        Route::get('/admin/users', [AuthController::class, 'getUsers']);
+        Route::post('/admin/create-user', [AuthController::class, 'createUserByAdmin']);
+        Route::put('/admin/users/{id}', [AuthController::class, 'updateUser']);
+        Route::delete('/admin/users/{id}', [AuthController::class, 'deleteUser']);
     });
 });

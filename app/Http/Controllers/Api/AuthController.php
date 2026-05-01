@@ -27,7 +27,7 @@ class AuthController extends Controller
         'password' => bcrypt($data['password']),
         'phone' => $data['phone'] ?? null,
 
-        
+
         'role' => 'customer',
 
         'status' => 'active',
@@ -92,6 +92,83 @@ class AuthController extends Controller
 
     return response()->json([
         'message' => 'Logout successful',
+    ]);
+}
+public function createUserByAdmin(Request $request): JsonResponse
+{
+    $authUser = Auth::user();
+
+    if (!$authUser || $authUser->role !== 'admin') {
+        return response()->json([
+            'message' => 'Unauthorized'
+        ], 403);
+    }
+
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:6',
+        'phone' => 'nullable|string',
+        'role' => 'required|in:admin,staff',
+        'status' => 'required|in:active,inactive',
+    ]);
+
+    $user = User::create([
+        'name' => $data['name'],
+        'email' => strtolower($data['email']),
+        'password' => bcrypt($data['password']),
+        'phone' => $data['phone'] ?? null,
+        'role' => $data['role'],
+
+        // ✅ FIX HERE
+        'status' => $data['status'] ?? 'active',
+    ]);
+
+    return response()->json([
+        'message' => 'User created successfully',
+        'user' => $user,
+    ]);
+}
+public function getUsers(): JsonResponse
+{
+    $authUser = Auth::user();
+
+    if (!$authUser || $authUser->role !== 'admin') {
+        return response()->json([
+            'message' => 'Unauthorized'
+        ], 403);
+    }
+
+    $users = User::select('name', 'email', 'role', 'status', 'phone')->get();
+
+    return response()->json([
+        'users' => $users
+    ]);
+}
+public function updateUser(Request $request, $id)
+{
+    $user = User::findOrFail($id);
+
+    $user->update([
+        'name' => $request->name,
+        'email' => strtolower($request->email),
+        'phone' => $request->phone,
+        'role' => $request->role,
+        'status' => $request->status ?? 'active',
+    ]);
+
+    return response()->json([
+        'message' => 'User updated successfully',
+        'user' => $user
+    ]);
+}
+public function deleteUser($id)
+{
+    $user = User::findOrFail($id);
+    $user->delete();
+
+    return response()->json([
+        'message' => 'User deleted successfully'
     ]);
 }
 }
